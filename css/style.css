@@ -1,0 +1,85 @@
+#login-well {
+	margin-top: 150px;
+}
+#new-payment {
+	margin-bottom: 20px;
+}
+#login-well legend {
+	font-size: 20px;
+	margin-bottom: 0px;
+}
+
+.container-fluid {
+	margin-top: 10px;
+}
+.datepicker {
+	z-index: 9999;
+}
+table caption {
+	text-align: left;
+	font-size: 25px;
+	margin-bottom: 10px;
+}
+.modal-body table caption {
+	font-size: 20px;	
+}
+div.filter-container {
+	float: left;
+	margin-right: 25px;
+}
+#type-filter {
+	float: right;
+	display: inline;
+	margin-top: -3px;
+}
+
+#order-history-modal {
+	width: 720px;
+	margin-left: -360px;
+}
+#order-details-modal {
+	width: 1250px;
+	margin-left: -625px;
+}
+#order-multi-fullfillment-modal {
+	width: 1250px;
+	margin-left: -625px;
+}
+#order-details-modal .modal-body, #order-address-update-modal .modal-body, #order-details-update-modal .modal-body, #order-new-modal .modal-body, #order-multi-fullfillment-modal .modal-body, #affiliate-update-modal .modal-body, #affiliate-commissions-modal .modal-body, #product-update-modal .modal-body, #affiliate-products-modal .modal-body {
+	max-height: 350px;
+}
+#product-quantities {
+	margin-top: 30px;
+}
+#order-new-modal, #order-details-update-modal {
+	width: 720px;
+	margin-left: -360px;
+}
+#paypal_account {
+    margin-top: 2px;
+    margin-left: 2px;
+}
+#show-unprocessed {
+    margin-left: 3px;
+}
+
+.table .text-right {text-align: right}
+.table .text-left {text-align: left}
+.table .text-center {text-align: center}
+
+/* DataTables fixes */
+table.table thead .sorting,
+table.table thead .sorting_asc,
+table.table thead .sorting_desc,
+table.table thead .sorting_asc_disabled,
+table.table thead .sorting_desc_disabled {
+    cursor: pointer;
+    *cursor: hand;
+}
+ 
+table.table thead .sorting { background: url('../images/sort_both.png') no-repeat center right; }
+table.table thead .sorting_asc { background: url('../images/sort_asc.png') no-repeat center right; }
+table.table thead .sorting_desc { background: url('../images/sort_desc.png') no-repeat center right; }
+ 
+table.table thead .sorting_asc_disabled { background: url('../images/sort_asc_disabled.png') no-repeat center right; }
+table.table thead .sorting_desc_disabled { background: url('../images/sort_desc_disabled.png') no-repeat center right; }

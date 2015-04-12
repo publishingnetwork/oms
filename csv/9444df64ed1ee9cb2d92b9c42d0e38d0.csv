@@ -1,0 +1,11 @@
+orderNum,orderRef,orderShipMethod,orderComments,custEmail,custPhone,custFName,custLName,custCompany,custAddress1,custAddress2,custCity,custState,custZip,custCountry,custBillFName,custBillLName,custBillCompany,custBillAddress1,custBillAddress2,custBillCity,custBillState,custBillZip,custBillCountry,items,SKU1,QTY1,SKU2,QTY2,SKU3,QTY3,SKU4,QTY4,SKU5,QTY5,SKU6,QTY6,SKU7,QTY7,SKU8,QTY8,SKU9,QTY9,SKU10,QTY10,SKU11,QTY11,SKU12,QTY12,SKU13,QTY13,SKU14,QTY14,SKU15,QTY15,SKU16,QTY16,SKU17,QTY17,SKU18,QTY18,SKU19,QTY19,SKU20,QTY20
+15714,15714,PMD,,henrypat@netnitco.net,,Patricia,DeKock,,"604 Almond, S.W.",,DeMotte,IN,46310,US,,,,,,,,,,1,SC001,4,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+15713,15713,PMD,,billizroberts@yahoo.com,956-226-9134,john,roberts,,"930 s. houston dr",,harlingen,TX,78550,US,,,,,,,,,,1,MU001,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+15712,15712,PMD,,dhicks928@aol.com,239-462-2051,Terri,Hicks,,"603 Maple Ave. N.",,"Lehigh Acres",FL,33972,US,,,,,,,,,,1,SC001,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+15710,15710,PMD,,bobeyongm@gmail.com,3304799307,Bobeyong,Meeks,,"4855 Edinderry Dr. NW",,Canton,OH,44708,US,,,,,,,,,,1,SC001,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+15709,15709,PMD,,sherry_doom@hotmail.com,7025587691,Sherry,Doom,,"8447 brody marsh ave",,"las Vegas",NV,89143,US,,,,,,,,,,1,SC001,4,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+15708,15708,PMD," Write your message here",debbie43@neo.rr.com,3309336249,DEBBRA,GROSENBAUGH,,"7027 PILOT KNOB AVE.",,LOUISVILLE,OH,44641,US,,,,,,,,,,1,SC001,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+15707,15707,PMD,,gmc5846@aol.com,973-661-0474,Geralyn,Caruso,,"14 Ideal Court",,Nutley,NJ,07110,US,,,,,,,,,,1,SC001,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+15705,15705,PMD,,lj0@comcast.net,941-822-0255,elisabeth,Johnson,,"5511 Dinah Lane",,Sarasota,FL,34231,US,,,,,,,,,,1,SC001,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+15706,15706,PMD,,vbiello19@aol.com,,Victoria,Turco-Biello,,"1 Warren Rd.",,"Croton on Hudson",NY,10520,US,,,,,,,,,,1,SC001,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+15702,15702,PMD,,Harchtam@yahoo.com,916-847-9689,Tammy,hatch,,"2115 Seebold Way",,Roseville,CA,95747,US,,,,,,,,,,1,SC001,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
