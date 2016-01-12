@@ -209,6 +209,82 @@ class Model_Order extends ORM {
 			$products_to_order->save();
 		}
 	}
+
+	public function _scrape_fullfillment_aus() {
+		set_time_limit(0);
+		ignore_user_abort(true);
+		$body = '<?xml version="1.0" encoding="UTF-8"?>
+						<soapenv:Envelope xmlns:occ="http://www.smartturn.com/services/occamtypes" xmlns:shiplook="http://www.smartturn.com/services/OccamService/shipment" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+						  <soapenv:Header/>
+						  <soapenv:Body>
+							<shiplook:lookupShipments>
+							  <shiplook:inCredential>
+								<occ:UserId>infotech@holisticlabs.com</occ:UserId>
+								<occ:Password>hHL.123</occ:Password>
+							  </shiplook:inCredential>
+							  <shiplook:inCriteria>
+							  <occ:criterions>
+								  <occ:propertyName>parcelPostStatus</occ:propertyName>
+								  <occ:operator>equal</occ:operator>
+								  <occ:stringValue>POSTED</occ:stringValue>
+								</occ:criterions>
+								<occ:paginationInfo>
+								  <occ:pageNumber>1</occ:pageNumber>
+								  <occ:recordsPerPage>50</occ:recordsPerPage>
+								</occ:paginationInfo>
+								<occ:sortingInfo>
+										 <occ:sortByProperty>dateShipped</occ:sortByProperty>
+										 <occ:sortType>DESCENDING</occ:sortType>
+									 </occ:sortingInfo>
+							  </shiplook:inCriteria>
+							</shiplook:lookupShipments>
+						  </soapenv:Body>
+						</soapenv:Envelope>';
+		$request = Request::factory('https://services.smartturn.com/occam/services/OccamService?wsdl')
+			->method(Request::POST)
+			->body($body)
+			->headers('Content-Type', 'text/xml')
+			->headers('SOAPAction', 'saveSalesOrder')
+			->execute();
+		$your_xml_response = $request->body();
+		$doc = new DOMDocument();
+		$doc->loadXML($your_xml_response);
+		foreach ($doc->getElementsByTagName('soItemInfo') as $item) {
+			$result[] = array(
+				'ext_id' => str_ireplace(array('HLL-', 'HHL-'), '', $item->attributes->item(0)->value),
+				'system_id' => $item->attributes->item(2)->value,
+			);
+		}
+		$i = 0;
+		foreach ($doc->getElementsByTagName('parcelTrackingNumber') as $item) {
+			$result[$i]['track_id'] = $item->nodeValue;
+			$i++;
+		}
+		if (isset($result)) {
+			foreach ($result as $item) {
+				$this
+					->clear()
+					->where('public_id', '=', $item['ext_id'])
+					->find();
+
+				if (!$this->loaded()) {
+					Log::instance()->add(Log::WARNING, 'Unknown product at SmartTurn, # ' . $item['ext_id']);
+					continue;
+				}
+
+				$this->tracking_id = empty($item['track_id']) ? DB::expr('NULL') : $item['track_id'];
+				$this->fullfillment_id = $item['system_id'];
+				$this->fullfillment_status = 'SHIPPED';
+				$this->internal_status = 'processed';
+				$this->save();
+
+				Log::instance()->add(Log::INFO, 'SmartTurn order update # ' . $item['ext_id'] . ', status: ' . 'SHIPPED');
+			}
+		} else {
+
+			Log::instance()->add(Log::EMERGENCY, 'Failed to login to SmartTurn');
+		}
+	}
 	
 	public function _scrape_fullfillment($statuses_limit = array()) {
 		
@@ -224,68 +300,89 @@ class Model_Order extends ORM {
 		));
 		
 		if (preg_match('/Location: user\.php/', $response)) {
-			
-			$base     = 'http://xcp.xpertfulfillment.com/showorders2.php?client=Holistic%20Labs%20Ltd&status=';
-			
-			if (!empty($statuses_limit)) {
-				$statuses = $statuses_limit;
-			} else {
-				$statuses = array('SHIPPED', 'PENDING', 'INPROCESS', 'BACKORDERED', 'CANCELLED',  'RETURNED');
-			}
-			
-			foreach ($statuses as $s) {
-			
-				//scrape 3 pages
-				for ($page = 0; $page <= 2; $page++) {
-					$response = $curl->get($base . $s . '&pag=' . $page);
-	
-					$dom = new DOMDocument();
-					@$dom->loadHtml($response);
-					
-					$xpath = new DOMXPath($dom);
-					$tr_nodes = $xpath->query('//tr[@class="menu"]/../tr[@bgcolor=""]');
-					
-					if ($tr_nodes->length) {
-						foreach ($tr_nodes as $tr) {
-							$td_nodes = $tr->getElementsByTagName('td');
-							
-							$scraped = array(
-								'fullfillment_id' => $td_nodes->item(0)->firstChild->nodeValue,
-								'public_id'       => $td_nodes->item(1)->firstChild->nodeValue,	
-							);
-	
-							if ($s == 'SHIPPED') {
-							
-								$a_nodes = $td_nodes->item(2)->getElementsByTagName('a');
-								if ($a_nodes->length) {
-									$scraped['tracking_id'] = $a_nodes->item(0)->nodeValue;
-								} else {
-									$scraped['tracking_id'] = 'N/A';
+//			if ($id != null) {
+//				$base = 'http://xcp.xpertfulfillment.com/showorders2.php?client=Holistic%20Labs%20Ltd&searchby=orderNum&searchfor=' . $id;
+//				$response = $curl->get($base);
+//				$dom = new DOMDocument();
+//				@$dom->loadHtml($response);
+//
+//				$xpath = new DOMXPath($dom);
+//				$tr_nodes = $xpath->query('//tr[@class="menu"]/../tr[@bgcolor=""]');
+//				$scraped['public_id'] = '';
+//				if ($tr_nodes->length) {
+//					foreach ($tr_nodes as $tr) {
+//						$td_nodes = $tr->getElementsByTagName('td');
+//
+//						$scraped = array(
+//							'public_id' => $td_nodes->item(1)->firstChild->nodeValue,
+//						);
+//					}
+//				}
+//				return $scraped['public_id'];
+//			} else {
+				$base = 'http://xcp.xpertfulfillment.com/showorders2.php?client=Holistic%20Labs%20Ltd&status=';
+
+
+				if (!empty($statuses_limit)) {
+					$statuses = $statuses_limit;
+				} else {
+					$statuses = array('SHIPPED', 'PENDING', 'INPROCESS', 'BACKORDERED', 'CANCELLED', 'RETURNED');
+				}
+
+				foreach ($statuses as $s) {
+
+					//scrape 3 pages
+					for ($page = 0; $page <= 2; $page++) {
+						$response = $curl->get($base . $s . '&pag=' . $page);
+
+						$dom = new DOMDocument();
+						@$dom->loadHtml($response);
+
+						$xpath = new DOMXPath($dom);
+						$tr_nodes = $xpath->query('//tr[@class="menu"]/../tr[@bgcolor=""]');
+
+						if ($tr_nodes->length) {
+							foreach ($tr_nodes as $tr) {
+								$td_nodes = $tr->getElementsByTagName('td');
+
+								$scraped = array(
+									'fullfillment_id' => $td_nodes->item(0)->firstChild->nodeValue,
+									'public_id' => $td_nodes->item(1)->firstChild->nodeValue,
+								);
+
+								if ($s == 'SHIPPED') {
+
+									$a_nodes = $td_nodes->item(2)->getElementsByTagName('a');
+									if ($a_nodes->length) {
+										$scraped['tracking_id'] = $a_nodes->item(0)->nodeValue;
+									} else {
+										$scraped['tracking_id'] = 'N/A';
+									}
+
 								}
-								
+
+								$this
+									->clear()
+									->where('public_id', '=', $scraped['public_id'])
+									->find();
+
+								if (!$this->loaded()) {
+									Log::instance()->add(Log::WARNING, 'Unknown product at XpertFulfillment, # ' . $scraped['public_id']);
+									continue;
+								}
+
+								$this->tracking_id = empty($scraped['tracking_id']) ? DB::expr('NULL') : $scraped['tracking_id'];
+								$this->fullfillment_id = $scraped['fullfillment_id'];
+								$this->fullfillment_status = $s;
+								$this->internal_status = 'processed';
+								$this->save();
+
+								Log::instance()->add(Log::INFO, 'XpertFulfillment order update # ' . $scraped['public_id'] . ', status: ' . $s);
 							}
-												
-							$this
-								->clear()
-								->where('public_id', '=', $scraped['public_id'])
-								->find();
-								
-							if (!$this->loaded()) {
-								Log::instance()->add(Log::WARNING, 'Unknown product at XpertFulfillment, # ' . $scraped['public_id']);
-								continue;
-							}
-									
-							$this->tracking_id         = empty($scraped['tracking_id']) ? DB::expr('NULL') : $scraped['tracking_id'];
-							$this->fullfillment_id     = $scraped['fullfillment_id'];
-							$this->fullfillment_status = $s;
-							$this->internal_status     = 'processed';
-							$this->save();
-							
-							Log::instance()->add(Log::INFO, 'XpertFulfillment order update # ' .$scraped['public_id'] . ', status: ' . $s);
 						}
 					}
 				}
-			}
+//			}
 			
 		} else {
 			Log::instance()->add(Log::EMERGENCY, 'Failed to login to XpertFulfillment');

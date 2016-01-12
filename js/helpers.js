@@ -22,7 +22,7 @@ function render(templateName, data) {
 }
 
 function js_message(type, message) {
-	$('#js_message').find('span').text(message);
+	$('#js_message').find('span').html(message);
 	$('#js_message').removeClass().addClass('alert alert-'+type).fadeIn('slow').delay(4000).fadeOut('slow');
 }
 

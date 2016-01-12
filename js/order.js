@@ -299,6 +299,282 @@ $(document).ready(function() {
 	    });
 	}
 	
+	$('.address-hover').click(function(e) {
+		e.preventDefault();
+		
+		$tr = $(this).parents('tr:first');
+		
+		$.ajax({
+		   url      : base_path + 'order/get_address/',
+		   dataType : 'json',
+		   method   : 'POST',
+		   data     : {
+			   type : $tr.data('type'),
+			   id   : $tr.data('specific_id')
+		   },
+		   success  : function (response) {
+		   	
+		   	   if (response.status == 'success') {
+			   	   $.each(response.data, function(index, value) {				   	     
+				   	   $('#address-hover-modal [name="'+index+'"]').val(value);  
+			   	   });
+			   	   $('#address-hover-modal').modal('show');
+		   	   } else {
+			   	   js_message('error', 'An error occured, please try again!');
+		   	   }
+		       
+		    },
+		   error    : function () {
+			    js_message('error', 'An error occured, please try again!');
+		    }
+	    });
+		
+	});
+
+
+	$('.internal-status').editable( function(value, settings) {
+			$tr = $(this).parents('tr:first');
+		
+			$.ajax({
+			   url      : base_path + 'order/save_status/',
+			   dataType : 'json',
+			   method   : 'POST',
+			   data     : {
+				   id    : $tr.data('order_id'),
+				   value : value
+			   },
+			   success  : function (response) {
+				
+				   if (response.status == 'success') {
+					   js_message('success', 'Status updated!');
+					   location.reload();
+				   } else {
+					   js_message('error', 'An error occured, please try again!');
+				   }
+				   
+				},
+			   error    : function () {
+					js_message('error', 'An error occured, please try again!');
+				}
+			});
+		}, {
+			data : function(e) {
+				var retVal;
+				var selVal = $(this).data('status');
+				
+				if(selVal == 'email'){
+					retVal = "{'email':'Email','processed':'Processed','new':'New', 'pending':'Pending', 'cancelled':'Cancelled', 'refunded':'Refunded', 'selected':'email'}";
+				} else if(selVal == 'processed'){
+					retVal = "{'email':'Email','processed':'Processed','new':'New', 'pending':'Pending', 'cancelled':'Cancelled', 'refunded':'Refunded', 'selected':'processed'}";
+				} else if(selVal == 'new'){
+					retVal = "{'email':'Email','processed':'Processed','new':'New', 'pending':'Pending', 'cancelled':'Cancelled', 'refunded':'Refunded', 'selected':'new'}";
+				} else if(selVal == 'pending'){
+					retVal = "{'email':'Email','processed':'Processed','new':'New', 'pending':'Pending', 'cancelled':'Cancelled', 'refunded':'Refunded', 'selected':'pending'}";
+				} else if(selVal == 'cancelled'){
+					retVal = "{'email':'Email','processed':'Processed','new':'New', 'pending':'Pending', 'cancelled':'Cancelled', 'refunded':'Refunded', 'selected':'cancelled'}";
+				} else if(selVal == 'refunded'){
+					retVal = "{'email':'Email','processed':'Processed','new':'New', 'pending':'Pending', 'cancelled':'Cancelled', 'refunded':'Refunded', 'selected':'refunded'}";
+				} else {
+					retVal = "{'email':'Email','processed':'Processed','new':'New', 'pending':'Pending', 'cancelled':'Cancelled', 'refunded':'Refunded'}";
+				}
+				return retVal;			
+			},
+			type   : 'select',
+			submit : 'OK',
+			indicator : 'Saving...'
+	});
+
+	$('.internal-campaign').editable( function(value, settings) {
+		$tr = $(this).parents('tr:first');
+
+		$.ajax({
+			url      : base_path + 'order/save_campaign/',
+			dataType : 'json',
+			method   : 'POST',
+			data     : {
+				id    : $tr.data('order_id'),
+				value : value,
+				type  : 'campaign'
+			},
+			success  : function (response) {
+
+				if (response.status == 'success') {
+					js_message('success', 'Campaign updated!');
+					location.reload();
+				} else {
+					js_message('error', 'An error occured, please try again!');
+				}
+
+			},
+			error    : function () {
+				js_message('error', 'An error occured, please try again!');
+			}
+		});
+	}, {
+		data : function(e) {
+			var selVal = $(this).data('campaign');
+
+			return selVal;
+		},
+		type   : 'text',
+		submit : 'OK',
+		indicator : 'Saving...'
+	});
+
+	$('.internal-subcampaign').editable( function(value, settings) {
+		$tr = $(this).parents('tr:first');
+
+		$.ajax({
+			url      : base_path + 'order/save_campaign/',
+			dataType : 'json',
+			method   : 'POST',
+			data     : {
+				id    : $tr.data('order_id'),
+				value : value,
+				type  : 'subcampaign'
+			},
+			success  : function (response) {
+
+				if (response.status == 'success') {
+					js_message('success', 'Subcampaign updated!');
+					location.reload();
+				} else {
+					js_message('error', 'An error occured, please try again!');
+				}
+
+			},
+			error    : function () {
+				js_message('error', 'An error occured, please try again!');
+			}
+		});
+	}, {
+		data : function(e) {
+			var selVal = $(this).data('subcampaign');
+
+			return selVal;
+		},
+		type   : 'text',
+		submit : 'OK',
+		indicator : 'Saving...'
+	});
+
+	$('.internal-affiliate').editable( function(value, settings) {
+		$tr = $(this).parents('tr:first');
+
+		$.ajax({
+			url      : base_path + 'order/save_affiliate/',
+			dataType : 'json',
+			method   : 'POST',
+			data     : {
+				id    : $tr.data('order_id'),
+				value : value
+			},
+			success  : function (response) {
+
+				if (response.status == 'success') {
+					js_message('success', 'Affiliate updated!');
+					location.reload();
+				} else {
+					js_message('error', 'An error occured, please try again!');
+				}
+
+			},
+			error    : function () {
+				js_message('error', 'An error occured, please try again!');
+			}
+		});
+	}, {
+		data : function(e) {
+			var retVal = '{';
+			var selVal = $(this).data('affiliate');
+			$('select#affiliate option').each(function () {
+				if (!isNaN(parseFloat($(this).val())) && isFinite($(this).val())) {
+					if ($(this).html() === selVal) {
+						retVal += "\'" + $(this).val() + "\'" + ':' + "\'" + $(this).html() + "\'," + "\'" + 'selected' + "\'" + ':' + "\'" + $(this).val() + "\',";
+					} else {
+						retVal += "\'" + $(this).val() + "\'" + ':' + "\'" + $(this).html() + "\',";
+					}
+				}
+			});
+			retVal += '}';
+
+			return retVal;
+		},
+		type   : 'select',
+		submit : 'OK',
+		indicator : 'Saving...'
+	});
+
+
+	$('.shipping-method').editable( function(value, settings) {
+			$tr = $(this).parents('tr:first');
+		
+			$.ajax({
+			   url      : base_path + 'order/save_shipping/',
+			   dataType : 'json',
+			   method   : 'POST',
+			   data     : {
+				   id    : $tr.data('order_id'),
+				   value : value
+			   },
+			   success  : function (response) {
+				
+				   if (response.status == 'success') {
+					   js_message('success', 'Shipping method updated!');
+					   location.reload();
+				   } else {
+					   js_message('error', 'An error occured, please try again!');
+				   }
+				   
+				},
+			   error    : function () {
+					js_message('error', 'An error occured, please try again!');
+				}
+			});
+		}, {
+			data : function(e) {
+				var retVal;
+				var selVal = $(this).data('shipping');
+				
+				if(selVal == 'Regular'){
+					retVal = "{'Regular':'Regular','Standard':'Standard','Express':'Express','FED1':'FedEx Next Day','FED2':'FedEx 2 Day ','FEDG':'FedEx Ground', 'FCD':'USPS Domestic First Class Mail Delivery Confirmation', 'FCS':'USPS Domestic First Class Mail Signature Required', 'PMD':'USPS Domestic Priority Mail Delivery Confirmation', 'PMS':'USPS Domestic Priority Mail Signature Required', 'EM':'USPS Domestic Express Mail', 'GPM':'USPS International Mail (no trackability)', 'PMI':'USPS International Priority Mail', 'GEM':'USPS International Express Mail','selected':'Regular'}";
+				} else if(selVal == 'Standard'){
+					retVal = "{'Regular':'Regular','Standard':'Standard','Express':'Express','FED1':'FedEx Next Day','FED2':'FedEx 2 Day ','FEDG':'FedEx Ground', 'FCD':'USPS Domestic First Class Mail Delivery Confirmation', 'FCS':'USPS Domestic First Class Mail Signature Required', 'PMD':'USPS Domestic Priority Mail Delivery Confirmation', 'PMS':'USPS Domestic Priority Mail Signature Required', 'EM':'USPS Domestic Express Mail', 'GPM':'USPS International Mail (no trackability)', 'PMI':'USPS International Priority Mail', 'GEM':'USPS International Express Mail','selected':'Standard'}";
+				} else if(selVal == 'Express'){
+					retVal = "{'Regular':'Regular','Standard':'Standard','Express':'Express','FED1':'FedEx Next Day','FED2':'FedEx 2 Day ','FEDG':'FedEx Ground', 'FCD':'USPS Domestic First Class Mail Delivery Confirmation', 'FCS':'USPS Domestic First Class Mail Signature Required', 'PMD':'USPS Domestic Priority Mail Delivery Confirmation', 'PMS':'USPS Domestic Priority Mail Signature Required', 'EM':'USPS Domestic Express Mail', 'GPM':'USPS International Mail (no trackability)', 'PMI':'USPS International Priority Mail', 'GEM':'USPS International Express Mail','selected':'Express'}";
+				} else if(selVal == 'FED1'){
+					retVal = "{'Regular':'Regular','Standard':'Standard','Express':'Express','FED1':'FedEx Next Day','FED2':'FedEx 2 Day ','FEDG':'FedEx Ground', 'FCD':'USPS Domestic First Class Mail Delivery Confirmation', 'FCS':'USPS Domestic First Class Mail Signature Required', 'PMD':'USPS Domestic Priority Mail Delivery Confirmation', 'PMS':'USPS Domestic Priority Mail Signature Required', 'EM':'USPS Domestic Express Mail', 'GPM':'USPS International Mail (no trackability)', 'PMI':'USPS International Priority Mail', 'GEM':'USPS International Express Mail','selected':'FED1'}";
+				} else if(selVal == 'FED2'){
+					retVal = "{'Regular':'Regular','Standard':'Standard','Express':'Express','FED1':'FedEx Next Day','FED2':'FedEx 2 Day ','FEDG':'FedEx Ground', 'FCD':'USPS Domestic First Class Mail Delivery Confirmation', 'FCS':'USPS Domestic First Class Mail Signature Required', 'PMD':'USPS Domestic Priority Mail Delivery Confirmation', 'PMS':'USPS Domestic Priority Mail Signature Required', 'EM':'USPS Domestic Express Mail', 'GPM':'USPS International Mail (no trackability)', 'PMI':'USPS International Priority Mail', 'GEM':'USPS International Express Mail','selected':'FED2'}";
+				} else if(selVal == 'FEDG'){
+					retVal = "{'Regular':'Regular','Standard':'Standard','Express':'Express','FED1':'FedEx Next Day','FED2':'FedEx 2 Day ','FEDG':'FedEx Ground', 'FCD':'USPS Domestic First Class Mail Delivery Confirmation', 'FCS':'USPS Domestic First Class Mail Signature Required', 'PMD':'USPS Domestic Priority Mail Delivery Confirmation', 'PMS':'USPS Domestic Priority Mail Signature Required', 'EM':'USPS Domestic Express Mail', 'GPM':'USPS International Mail (no trackability)', 'PMI':'USPS International Priority Mail', 'GEM':'USPS International Express Mail','selected':'FEDG'}";
+				} else if(selVal == 'FCD'){
+					retVal = "{'Regular':'Regular','Standard':'Standard','Express':'Express','FED1':'FedEx Next Day','FED2':'FedEx 2 Day ','FEDG':'FedEx Ground', 'FCD':'USPS Domestic First Class Mail Delivery Confirmation', 'FCS':'USPS Domestic First Class Mail Signature Required', 'PMD':'USPS Domestic Priority Mail Delivery Confirmation', 'PMS':'USPS Domestic Priority Mail Signature Required', 'EM':'USPS Domestic Express Mail', 'GPM':'USPS International Mail (no trackability)', 'PMI':'USPS International Priority Mail', 'GEM':'USPS International Express Mail','selected':'FCD'}";
+				} else if(selVal == 'FCS'){
+					retVal = "{'Regular':'Regular','Standard':'Standard','Express':'Express','FED1':'FedEx Next Day','FED2':'FedEx 2 Day ','FEDG':'FedEx Ground', 'FCD':'USPS Domestic First Class Mail Delivery Confirmation', 'FCS':'USPS Domestic First Class Mail Signature Required', 'PMD':'USPS Domestic Priority Mail Delivery Confirmation', 'PMS':'USPS Domestic Priority Mail Signature Required', 'EM':'USPS Domestic Express Mail', 'GPM':'USPS International Mail (no trackability)', 'PMI':'USPS International Priority Mail', 'GEM':'USPS International Express Mail','selected':'FCS'}";
+				} else if(selVal == 'PMD'){
+					retVal = "{'Regular':'Regular','Standard':'Standard','Express':'Express','FED1':'FedEx Next Day','FED2':'FedEx 2 Day ','FEDG':'FedEx Ground', 'FCD':'USPS Domestic First Class Mail Delivery Confirmation', 'FCS':'USPS Domestic First Class Mail Signature Required', 'PMD':'USPS Domestic Priority Mail Delivery Confirmation', 'PMS':'USPS Domestic Priority Mail Signature Required', 'EM':'USPS Domestic Express Mail', 'GPM':'USPS International Mail (no trackability)', 'PMI':'USPS International Priority Mail', 'GEM':'USPS International Express Mail','selected':'PMD'}";
+				} else if(selVal == 'PMS'){
+					retVal = "{'Regular':'Regular','Standard':'Standard','Express':'Express','FED1':'FedEx Next Day','FED2':'FedEx 2 Day ','FEDG':'FedEx Ground', 'FCD':'USPS Domestic First Class Mail Delivery Confirmation', 'FCS':'USPS Domestic First Class Mail Signature Required', 'PMD':'USPS Domestic Priority Mail Delivery Confirmation', 'PMS':'USPS Domestic Priority Mail Signature Required', 'EM':'USPS Domestic Express Mail', 'GPM':'USPS International Mail (no trackability)', 'PMI':'USPS International Priority Mail', 'GEM':'USPS International Express Mail','selected':'PMS'}";
+				} else if(selVal == 'EM'){
+					retVal = "{'Regular':'Regular','Standard':'Standard','Express':'Express','FED1':'FedEx Next Day','FED2':'FedEx 2 Day ','FEDG':'FedEx Ground', 'FCD':'USPS Domestic First Class Mail Delivery Confirmation', 'FCS':'USPS Domestic First Class Mail Signature Required', 'PMD':'USPS Domestic Priority Mail Delivery Confirmation', 'PMS':'USPS Domestic Priority Mail Signature Required', 'EM':'USPS Domestic Express Mail', 'GPM':'USPS International Mail (no trackability)', 'PMI':'USPS International Priority Mail', 'GEM':'USPS International Express Mail','selected':'EM'}";
+				} else if(selVal == 'GPM'){
+					retVal = "{'Regular':'Regular','Standard':'Standard','Express':'Express','FED1':'FedEx Next Day','FED2':'FedEx 2 Day ','FEDG':'FedEx Ground', 'FCD':'USPS Domestic First Class Mail Delivery Confirmation', 'FCS':'USPS Domestic First Class Mail Signature Required', 'PMD':'USPS Domestic Priority Mail Delivery Confirmation', 'PMS':'USPS Domestic Priority Mail Signature Required', 'EM':'USPS Domestic Express Mail', 'GPM':'USPS International Mail (no trackability)', 'PMI':'USPS International Priority Mail', 'GEM':'USPS International Express Mail','selected':'GPM'}";
+				} else if(selVal == 'PMI'){
+					retVal = "{'Regular':'Regular','Standard':'Standard','Express':'Express','FED1':'FedEx Next Day','FED2':'FedEx 2 Day ','FEDG':'FedEx Ground', 'FCD':'USPS Domestic First Class Mail Delivery Confirmation', 'FCS':'USPS Domestic First Class Mail Signature Required', 'PMD':'USPS Domestic Priority Mail Delivery Confirmation', 'PMS':'USPS Domestic Priority Mail Signature Required', 'EM':'USPS Domestic Express Mail', 'GPM':'USPS International Mail (no trackability)', 'PMI':'USPS International Priority Mail', 'GEM':'USPS International Express Mail','selected':'PMI'}";
+				} else if(selVal == 'GEM'){
+					retVal = "{'Regular':'Regular','Standard':'Standard','Express':'Express','FED1':'FedEx Next Day','FED2':'FedEx 2 Day ','FEDG':'FedEx Ground', 'FCD':'USPS Domestic First Class Mail Delivery Confirmation', 'FCS':'USPS Domestic First Class Mail Signature Required', 'PMD':'USPS Domestic Priority Mail Delivery Confirmation', 'PMS':'USPS Domestic Priority Mail Signature Required', 'EM':'USPS Domestic Express Mail', 'GPM':'USPS International Mail (no trackability)', 'PMI':'USPS International Priority Mail', 'GEM':'USPS International Express Mail','selected':'GEM'}";
+				} else {
+					retVal = "{'Regular':'Regular','Standard':'Standard','Express':'Express','FED1':'FedEx Next Day','FED2':'FedEx 2 Day ','FEDG':'FedEx Ground', 'FCD':'USPS Domestic First Class Mail Delivery Confirmation', 'FCS':'USPS Domestic First Class Mail Signature Required', 'PMD':'USPS Domestic Priority Mail Delivery Confirmation', 'PMS':'USPS Domestic Priority Mail Signature Required', 'EM':'USPS Domestic Express Mail', 'GPM':'USPS International Mail (no trackability)', 'PMI':'USPS International Priority Mail', 'GEM':'USPS International Express Mail'}";
+				}
+				return retVal;			
+			},
+			type   : 'select',
+			submit : 'OK',
+			indicator : 'Saving...',
+			placeholder : '&nbsp;'
+	});
+
 	$('.order-address-update').click(function(e) {
 		e.preventDefault();
 		
@@ -525,15 +801,45 @@ $(document).ready(function() {
 			   id   : $(this).data('order_id')
 		   },
 		   success  : function (response) {
-			   
-			   
-		       if (response.status == 'success') {
-			       js_message('success', 'Order sent for fullfillment!');
-			       
-			       setTimeout(function() {
-					  //location.hash = order_table.fnSettings()._iDisplayStart;
-				      location.reload(); 
-			       }, 300);
+
+
+			   if (response.status == 'success') {
+				   //var message = '';
+				   js_message('success', 'Orders sent for fullfillment!');
+				   //if (response.orders.exist != undefined) {
+					//   message += 'Orders ';
+					//   response.orders.exist.forEach(function (value, key) {
+					//	   if (response.orders.exist.length-1 == key) {
+					//		   message += '#' + value;
+					//	   } else {
+					//		   message += '#' + value + ', ';
+					//	   }
+					//   });
+					//   message += " not sent for fullfillment!<br>";
+				   //}
+                   //
+				   //if (response.orders.new != undefined) {
+					//   message += 'Orders ';
+					//   response.orders.new.forEach(function (value, key) {
+					//	   if (response.orders.new.length-1 == key) {
+					//		   message += '#' + value;
+					//	   } else {
+					//		   message += '#' + value + ', ';
+					//	   }
+					//   });
+					//   message += ' sent for fullfillment!';
+				   //}
+				   //if (message != '') {
+					//   setTimeout(function() {
+					//	   js_message('success', message);
+					//   }, 300);
+                   //
+				   //}
+
+				   setTimeout(function() {
+					   //location.hash = order_table.fnSettings()._iDisplayStart;
+					   location.reload();
+				   }, 400);
 				   
 		       } else {
 				   js_message('error', 'An error occured, please try again!');
@@ -569,12 +875,42 @@ $(document).ready(function() {
 			   
 			   
 		       if (response.status == 'success') {
+				   //var message = '';
 			       js_message('success', 'Orders sent for fullfillment!');
+				   //if (response.orders.exist != undefined) {
+					//   message += 'Orders ';
+					//   response.orders.exist.forEach(function (value, key) {
+					//	   if (response.orders.exist.length-1 == key) {
+					//		   message += '#' + value;
+					//	   } else {
+					//		   message += '#' + value + ', ';
+					//	   }
+					//   });
+					//   message += " not sent for fullfillment!<br>";
+				   //}
+                   //
+				   //if (response.orders.new != undefined) {
+					//   message += 'Orders ';
+					//   response.orders.new.forEach(function (value, key) {
+					//	   if (response.orders.new.length-1 == key) {
+					//		   message += '#' + value;
+					//	   } else {
+					//		   message += '#' + value + ', ';
+					//	   }
+					//   });
+					//   message += ' sent for fullfillment!';
+				   //}
+				   //if (message != '') {
+					//   setTimeout(function() {
+					//	   js_message('success', message);
+					//   }, 300);
+                   //
+				   //}
 			       
 			       setTimeout(function() {
 					  //location.hash = order_table.fnSettings()._iDisplayStart;
-				      location.reload(); 
-			       }, 300);
+				      location.reload();
+			       }, 400);
 				   
 		       } else {
 

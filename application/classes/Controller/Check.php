@@ -21,6 +21,10 @@ class Controller_Check extends Controller {
 				'get_orders_for_merge',
 				'merge',
 				'report',
+				'save_status',
+				'save_campaign',
+				'save_affiliate',
+				'save_shipping',
 			),
 			'Product' => array(
 				'index',
@@ -88,6 +92,8 @@ class Controller_Check extends Controller {
 				'get_orders_for_merge',
 				'merge',
 				'report',
+				'save_status',
+				'save_shipping',
 			),
 			'Product' => array(
 				'index',
@@ -165,6 +171,7 @@ class Controller_Check extends Controller {
 				'catch_click',
 				'catch_lead',
 				'scrape_fullfillment',
+				'scrape_fullfillment_aus',
 				'update_paypal',
 				'download_paypal',
 				'test_paypal',
@@ -183,7 +190,6 @@ class Controller_Check extends Controller {
 	);
 	
 	public function before() {
-	
 		$session = Session::instance();
 		
 		if (!$session->get('user_id')) {

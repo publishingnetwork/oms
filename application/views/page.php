@@ -98,6 +98,7 @@
 		<script type="text/javascript" src="<?php echo URL::base(); ?>js/helpers.js"></script>
 		<script type="text/javascript" src="<?php echo URL::base(); ?>js/common.js"></script>
 		<script type="text/javascript" src="<?php echo URL::base(); ?>js/underscore-min.js"></script>
+		<script type="text/javascript" src="<?php echo URL::base(); ?>js/jquery.jeditable.min.js"></script>
 		<script type="text/javascript" src="<?php echo URL::base(); ?>js/<?php echo $controller; ?>.js"></script>
 		
 		<script>

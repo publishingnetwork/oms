@@ -61,6 +61,7 @@ class Task_Downloadpaypal extends Minion_Task
 									$paypal_details->transaction_id = $transaction->TransactionID;
 									$paypal_details->_from_paypal_response($response);
 									$paypal_details->product_id = $product->id;
+									$fulfilment_center = $product->fulfilment_center;
 								
 									$paypal_details_check = ORM::factory('PaypalDetail')
 										->where('email', '=', $paypal_details->email)
@@ -70,6 +71,23 @@ class Task_Downloadpaypal extends Minion_Task
 									if ($paypal_details_check->loaded()) {
 										//we have an order for this PayPal email
 										$order = ORM::factory('Order', $paypal_details_check->order_id);
+
+										$aus_fulfilment = false;
+										$products_to_orders = ORM::factory('ProductsToOrder')
+											->where('order_id', '=', $paypal_details_check->order_id)
+											->find_all();
+											
+										foreach ($products_to_orders as $p_a) {
+											$product_a = ORM::factory('Product', $p_a->product_id);
+											if($product_a->fulfilment_center == 'AUS'){
+												$aus_fulfilment = true;
+											}
+										}
+
+										if ($aus_fulfilment) {
+											$order->shipping_method = 'Regular';
+											$order->save();
+										}
 										
 										Log::instance()->add(Log::INFO, 'Found a PayPal order (API, no session_id) by email, order #' . $paypal_details->order_id);
 									} else {
@@ -83,6 +101,23 @@ class Task_Downloadpaypal extends Minion_Task
 										if ($shipping_details_check->loaded()) {
 											//we have an order for this PayPal email
 											$order = ORM::factory('Order', $shipping_details_check->order_id);
+
+											$aus_fulfilment = false;
+											$products_to_orders = ORM::factory('ProductsToOrder')
+												->where('order_id', '=', $shipping_details_check->order_id)
+												->find_all();
+												
+											foreach ($products_to_orders as $p_a) {
+												$product_s = ORM::factory('Product', $p_a->product_id);
+												if($product_s->fulfilment_center == 'AUS'){
+													$aus_fulfilment = true;
+												}
+											}
+
+											if ($aus_fulfilment) {
+												$order->shipping_method = 'Regular';
+												$order->save();
+											}
 											
 											Log::instance()->add(Log::INFO, 'Found a ShippingDetail order (API, no session_id) by email, order #' . $shipping_details_check->order_id);
 										} else {
@@ -92,6 +127,8 @@ class Task_Downloadpaypal extends Minion_Task
 
 											if ($paypal_details->country == 'US') {
 												$order->shipping_method = 'PMD';
+											} else if($fulfilment_center == 'AUS'){
+												$order->shipping_method = 'Regular';
 											}
 											
 											$order->save();
@@ -191,6 +228,7 @@ class Task_Downloadpaypal extends Minion_Task
 									$paypal_details->transaction_id = $transaction->TransactionID;
 									$paypal_details->_from_paypal_response($response);
 									$paypal_details->product_id = $product->id;
+									$fulfilment_center = $product->fulfilment_center;
 								
 									$paypal_details_check = ORM::factory('PaypalDetail')
 										->where('email', '=', $paypal_details->email)
@@ -200,6 +238,23 @@ class Task_Downloadpaypal extends Minion_Task
 									if ($paypal_details_check->loaded()) {
 										//we have an order for this PayPal email
 										$order = ORM::factory('Order', $paypal_details_check->order_id);
+
+										$aus_fulfilment = false;
+										$products_to_orders = ORM::factory('ProductsToOrder')
+											->where('order_id', '=', $paypal_details_check->order_id)
+											->find_all();
+											
+										foreach ($products_to_orders as $p_a) {
+											$product_a = ORM::factory('Product', $p_a->product_id);
+											if($product_a->fulfilment_center == 'AUS'){
+												$aus_fulfilment = true;
+											}
+										}
+
+										if ($aus_fulfilment) {
+											$order->shipping_method = 'Regular';
+											$order->save();
+										}
 										
 										Log::instance()->add(Log::INFO, 'Found a PayPal order (API, no session_id) by email, order #' . $paypal_details->order_id);
 									} else {
@@ -213,6 +268,23 @@ class Task_Downloadpaypal extends Minion_Task
 										if ($shipping_details_check->loaded()) {
 											//we have an order for this PayPal email
 											$order = ORM::factory('Order', $shipping_details_check->order_id);
+
+											$aus_fulfilment = false;
+											$products_to_orders = ORM::factory('ProductsToOrder')
+												->where('order_id', '=', $shipping_details_check->order_id)
+												->find_all();
+												
+											foreach ($products_to_orders as $p_a) {
+												$product_s = ORM::factory('Product', $p_a->product_id);
+												if($product_s->fulfilment_center == 'AUS'){
+													$aus_fulfilment = true;
+												}
+											}
+
+											if ($aus_fulfilment) {
+												$order->shipping_method = 'Regular';
+												$order->save();
+											}
 											
 											Log::instance()->add(Log::INFO, 'Found a ShippingDetail order (API, no session_id) by email, order #' . $shipping_details_check->order_id);
 										} else {
@@ -222,6 +294,8 @@ class Task_Downloadpaypal extends Minion_Task
 
 											if ($paypal_details->country == 'US') {
 												$order->shipping_method = 'PMD';
+											} else if($fulfilment_center == 'AUS'){
+												$order->shipping_method = 'Regular';
 											}
 											
 											$order->save();

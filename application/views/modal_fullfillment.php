@@ -28,14 +28,23 @@
 			<td><?php echo $o['country']; ?></td>
 			<td>
 			<?php
-				foreach ($o['skus'] as $s): ?>
+				foreach ($o['skus'] as $s):
+					if($s['quantity'] > 0){
+				?>
 				<span class="label"><?php echo $s['quantity'] . ' x ' . $s['sku']; ?></span>
 				<?php
+					}
 				endforeach;
 			 ?>
 			 </td>
 		</tr>
 		<?php endforeach; ?>
 	</tbody>
-	
+
 </table>
+
+<?php
+
+//echo "<pre>";
+//	var_dump($orders);
+//echo "</pre>";

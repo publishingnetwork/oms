@@ -7,9 +7,9 @@ return array
     (
         'type'       => 'MySQL',
         'connection' => array(
-            'hostname'   => 'localhost',
-            'username'   => 'yeastinf_oms',
-            'password'   => '9B}8bW$V,Vw$',
+            'hostname'   => '127.0.0.1',
+            'username'   => 'root',
+            'password'   => '1234',
             'persistent' => FALSE,
             'database'   => 'yeastinf_oms',
         ),

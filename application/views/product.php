@@ -31,6 +31,9 @@
 			<th>
 				Affiliate Status
 			</th>
+			<th>
+				Fulfilment Center
+			</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -75,6 +78,9 @@
 			</td>
 			<td>
 				<?php echo ucfirst($product['affiliate_status']); ?>
+			</td>
+			<td>
+				<?php echo ucfirst($product['fulfilment_center']); ?>
 			</td>
 		</tr>
 		<?php endforeach; ?>
@@ -136,6 +142,15 @@
 							<select name="affiliate_status" id="affiliate_status">
 								<option value="hide">Hide</option>
 								<option value="show">Show</option>
+							</select>
+						</div>
+					</div>
+					<div class="control-group">
+						<label for="fulfilment_center">Fulfilment Center</label>
+						<div class="controls">
+							<select name="fulfilment_center" id="fulfilment_center">
+								<option value="US">US</option>
+								<option value="AUS">AUS</option>
 							</select>
 						</div>
 					</div>

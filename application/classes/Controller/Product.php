@@ -43,6 +43,7 @@ class Controller_Product extends Controller_Check {
 				'default_int_commission' => $product->default_int_commission,
 				'urls'                   => $product->urls,
 				'affiliate_status'       => $product->affiliate_status,
+				'fulfilment_center'      => $product->fulfilment_center,
 				'skus'                   => array()
 			);
 			
@@ -79,6 +80,7 @@ class Controller_Product extends Controller_Check {
 		$product->default_commission     = $this->request->post('default_commission');
 		$product->default_int_commission = $this->request->post('default_int_commission');
 		$product->affiliate_status       = $this->request->post('affiliate_status');
+		$product->fulfilment_center      = $this->request->post('fulfilment_center');
 		$product->urls                   = $this->request->post('urls');
 		$product->paypal_ids             = $this->request->post('paypal_ids');
 		

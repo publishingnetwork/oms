@@ -5,10 +5,10 @@
 <?php foreach ($orders as $order): ?>
 <Order id='<?php echo $order['public_id']; ?>'>
 	<AddressInfo type='ship'>
-		<Name><?php echo $order['name']; ?></Name>
+		<Name><?php echo htmlspecialchars($order['name']); ?></Name>
 		<Company> </Company>
-		<Address1><?php echo $order['address1']; ?></Address1>
-		<Address2><?php echo !empty($order['address2']) ? $order['address2'] : ''; ?></Address2>
+		<Address1><?php echo htmlspecialchars($order['address1']); ?></Address1>
+		<Address2><?php echo !empty($order['address2']) ? htmlspecialchars($order['address2']) : ''; ?></Address2>
 		<City><?php echo $order['city']; ?></City>
 		<State><?php echo $order['state']; ?></State>
 		<Country><?php echo $order['country']; ?></Country>

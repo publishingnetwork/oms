@@ -92,7 +92,8 @@ if (isset($_SERVER['KOHANA_ENV']))
  * - boolean  expose      set the X-Powered-By header                        FALSE
  */
 Kohana::init(array(
-	'base_url'   => 'http://energizegreens.com/oms/',
+	// 'base_url'   => 'http://energizegreens.com/oms/',
+	'base_url'   => '/oms/',
 	'index_file' => FALSE,
 ));
 

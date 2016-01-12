@@ -38,7 +38,7 @@
 		</ul>
 		</form>
 	</div>
-	
+
 	<div class="filter-container">
 		<form class="form-inline pull-right" id="search-form" action="<?php echo URL::base(); ?>order" method="get">
 			<label>Search:</label>
@@ -50,7 +50,7 @@
 			<input type="hidden" name="affiliate" value="<?php echo $affiliate; ?>">
 		</form>
 	</div>
-	
+
 	<div class="filter-container">
 		<form class="form-inline pull-right" id="affiliate-form" action="<?php echo URL::base(); ?>order" method="get">
 			<label>Affiliate:</label>
@@ -73,86 +73,91 @@
 
 <table class="table table-bordered table-hover" id="order-table">
 	<caption>Orders</caption>
-	
+
 	<thead>
 		<tr>
-		
-<?php
 
+<?php
 		if ($user->hidden_columns) {
-			$hidden_columns = explode(',', $user->hidden_columns); 
+			$hidden_columns = explode(',', $user->hidden_columns);
 		} else {
 			$hidden_columns = array();
 		}
-	?>		
-		
+	?>
+
 			<th data-name="actions">
 			</th>
 			<?php //if ($user->type == 'admin'): ?>
 			<th  data-name="checkbox">
 			</th>
 			<?php //endif; ?>
-			
+
 			<?php if (!in_array('type', $hidden_columns)) : ?>
 			<th data-name="type">
 				Type
 			</th>
 			<?php endif; ?>
-			
+
+			<?php if (!in_array('public_id', $hidden_columns)) : ?>
+			<th data-name="public_id">
+				Order #
+			</th>
+			<?php endif; ?>
+
 			<?php if (!in_array('date_added', $hidden_columns)) : ?>
 			<th data-name="date_added">
 				Date
 			</th>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('item_title', $hidden_columns)) : ?>
 			<th data-name="item_title">
 				PayPal Item
 			</th>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('name', $hidden_columns)) : ?>
 			<th data-name="name">
 				Name
 			</th>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('address1', $hidden_columns)) : ?>
 			<th data-name="address1">
 				Address
 			</th>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('address2', $hidden_columns)) : ?>
 			<th data-name="address2">
 				Address 2
 			</th>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('city', $hidden_columns)) : ?>
 			<th data-name="city">
 				City
 			</th>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('zip', $hidden_columns)) : ?>
 			<th data-name="zip">
 				Zip
 			</th>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('state', $hidden_columns)) : ?>
 			<th data-name="state">
 				State
 			</th>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('country', $hidden_columns)) : ?>
 			<th data-name="country">
 				Country
 			</th>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('item_id', $hidden_columns)) : ?>
 			<th data-name="item_id">
 				PayPal Item #
@@ -164,85 +169,79 @@
 				PayPal Account
 			</th>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('email', $hidden_columns)) : ?>
 			<th data-name="email">
 				Email
 			</th>
 			<?php endif; ?>
-			
-			<?php if (!in_array('public_id', $hidden_columns)) : ?>
-			<th data-name="public_id">
-				Order #
-			</th>
-			<?php endif; ?>
-			
+
 			<?php if (!in_array('time_added', $hidden_columns)) : ?>
 			<th data-name="time_added">
 				Time
 			</th>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('internal_status', $hidden_columns)) : ?>
 			<th data-name="internal_status">
 				OMS Status
 			</th>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('fullfillment_status', $hidden_columns)) : ?>
 			<th data-name="fullfillment_status">
 				Fullfillment Status
 			</th>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('tracking_id', $hidden_columns)) : ?>
 			<th data-name="tracking_id">
 				Tracking #
 			</th>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('shipping_method', $hidden_columns)) : ?>
 			<th  data-name="shipping_method">
 				Shipping Method
 			</th>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('fullfillment_id', $hidden_columns)) : ?>
 			<th  data-name="fullfillment_id">
 				Fullfillment #
 			</th>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('comments', $hidden_columns)) : ?>
 			<th  data-name="comments">
 				Comments
 			</th>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('gross', $hidden_columns)) : ?>
 			<th  data-name="gross">
 				Gross
 			</th>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('fee', $hidden_columns)) : ?>
 			<th  data-name="fee">
 				Fee
 			</th>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('net', $hidden_columns)) : ?>
 			<th  data-name="net">
 				Net
 			</th>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('shipping_cost', $hidden_columns)) : ?>
 			<th  data-name="shipping_cost">
 				Shipping Cost
 			</th>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('commission', $hidden_columns)) : ?>
 			<th  data-name="commission">
 				Commission
@@ -254,19 +253,40 @@
 				Commission Status
 			</th>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('affiliate', $hidden_columns)) : ?>
 			<th  data-name="affiliate">
 				Affiliate
 			</th>
 			<?php endif; ?>
+			<?php if (!in_array('campaign', $hidden_columns)) : ?>
+				<th  data-name="campaign">
+					Campaign
+				</th>
+			<?php endif; ?>
+			<?php if (!in_array('subcampaign', $hidden_columns)) : ?>
+				<th  data-name="subcampaign">
+					Subcampaign
+				</th>
+			<?php endif; ?>
+			<?php if (!in_array('ip', $hidden_columns)) : ?>
+				<th  data-name="ip">
+					ip
+				</th>
+			<?php endif; ?>
+
+			<?php if (!in_array('items', $hidden_columns)) : ?>
+				<th  data-name="items">
+					Items
+				</th>
+			<?php endif; ?>
 		</tr>
 	</thead>
 	<tbody>
-	
+
 		<?php foreach ($order_rows as $o_r): ?>
 		<?php $type = empty($o_r['type']) ? 'paypal' : $o_r['type']; ?>
-		
+
 		<tr data-order_id="<?php echo $o_r['order_id']; ?>" data-public_id="<?php echo $o_r['public_id']; ?>" data-fullfillment_id="<?php echo !empty($o_r['fullfillment_id']) ? $o_r['fullfillment_id'] : ''; ?>" data-specific_id="<?php echo $o_r['id']; ?>" data-type="<?php echo $type; ?>">
 			<td>
 				<div class="btn-group">
@@ -278,17 +298,17 @@
 						<?php if ($user->type == 'admin'): ?>
 						<li><a href="#" class="order-send">Send for Fullfillment</a></li>
 						<?php endif; ?>
-						
+
 						<li><a href="#" class="order-details">Details</a></li>
 						<li><a href="#" class="order-history">Order History</a></li>
-						
+
 						<?php if (in_array($user->type, array('admin', 'staff'))): ?>
 						<li><a href="#" class="order-address-update">Update Address</a></li>
 						<li><a href="#" class="order-details-update">Update Details</a></li>
 						<li><a href="#" class="order-address-fix">Fix Address</a></li>
 						<li><a href="#" class="order-merge">Merge</a></li>
 						<?php endif; ?>
-						
+
 						<?php if ($user->type == 'admin' && $type != 'paypal'): ?>
 						<li><a href="#" class="order-delete" data-type="<?php $type; ?>">Delete</a></li>
 						<?php endif; ?>
@@ -297,162 +317,169 @@
 			</td>
 			<?php //if ($user->type == 'admin'): ?>
 			<td>
-				
-				
+
+
 				<?php if ($type != 'paypal' || ($type == 'paypal' && !empty($o_r['checkbox']))): ?>
 				<input type="checkbox" class="send-checkbox">
 				<?php endif; ?>
 			</td>
 			<?php //endif; ?>
-			
+
 			<?php if (!in_array('type', $hidden_columns)) : ?>
 			<td class="type">
 				<?php echo $type;
 				 ?>
 			</td>
 			<?php endif; ?>
-			
+
+			<?php if (!in_array('public_id', $hidden_columns)) : ?>
+			<td>
+				<?php echo !empty($o_r['public_id']) ? $o_r['public_id'] : ''; ?>
+			</td>
+			<?php endif; ?>
+
 			<?php if (!in_array('date_added', $hidden_columns)) : ?>
 			<td>
 				<?php echo date('m/d/Y', strtotime($o_r['date_added'])); ?>
 			</td>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('item_title', $hidden_columns)) : ?>
 			<td>
 				<?php echo !empty($o_r['item_title']) ? $o_r['item_title'] : ''; ?>
 			</td>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('name', $hidden_columns)) : ?>
 			<td>
-				<?php 
+				<?php
 					if (preg_match('/_MISMATCH$/', $o_r['name'])) {
 						$name = str_replace('_MISMATCH', '', $o_r['name']) . ' <span class="label label-warning show-tooltip" title="Mismatch"><i class="icon-exclamation-sign icon-white"></i></span>';
-						
+
 						if (in_array($user->type, array('admin', 'staff'))) {
 							$name .= ' <input type="checkbox" class="fix-address" data-field="name" data-type="' . $type . '" data-id="' . $o_r['id'] . '">';
 						}
 					} else {
 						$name = $o_r['name'];
 					}
-				echo $name; 
+				echo $name;
 				?>
 			</td>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('address1', $hidden_columns)) : ?>
 			<td>
-				<?php 
+				<?php
 					if (preg_match('/_MISMATCH$/', $o_r['address1'])) {
-										
-						$address = str_replace('_MISMATCH', '', $o_r['address1']) . ' <span class="label label-warning show-tooltip" title="Mismatch"><i class="icon-exclamation-sign icon-white"></i></span>';
-						
+
+						$address = str_replace('_MISMATCH', '', $o_r['address1']);
+						$address = '<p class="address-hover">'. $address .'</p>'. ' <span class="label label-warning show-tooltip" title="Mismatch"><i class="icon-exclamation-sign icon-white"></i></span>';
+
 						if (in_array($user->type, array('admin', 'staff'))) {
 							$address .= ' <input type="checkbox" class="fix-address" data-field="address1" data-type="' . $type . '" data-id="' . $o_r['id'] . '">';
 						}
-						
+
 					} else {
-						$address = $o_r['address1'];
+						$address = '<p class="address-hover">'. $o_r['address1'] .'</p>';
 					}
-				echo $address; 
+				echo $address;
 				?>
 			</td>
 			<?php endif; ?>
-			
-			
+
+
 			<?php if (!in_array('address2', $hidden_columns)) : ?>
 			<td>
-				<?php 
+				<?php
 					if (preg_match('/_MISMATCH$/', $o_r['address2'])) {
-										
+
 						$address = str_replace('_MISMATCH', '', $o_r['address2']) . ' <span class="label label-warning show-tooltip" title="Mismatch"><i class="icon-exclamation-sign icon-white"></i></span>';
-						
+
 						if (in_array($user->type, array('admin', 'staff'))) {
 							$address .= ' <input type="checkbox" class="fix-address" data-field="address2" data-type="' . $type . '" data-id="' . $o_r['id'] . '">';
 						}
-						
+
 					} else {
 						$address = $o_r['address2'];
 					}
-				echo $address; 
+				echo $address;
 				?>
 			</td>
 			<?php endif; ?>
-			
-			
+
+
 			<?php if (!in_array('city', $hidden_columns)) : ?>
 			<td>
-				<?php 
+				<?php
 					if (preg_match('/_MISMATCH$/', $o_r['city'])) {
-					
+
 						$city = str_replace('_MISMATCH', '', $o_r['city']) . ' <span class="label label-warning show-tooltip" title="Mismatch"><i class="icon-exclamation-sign icon-white"></i></span>';
-						
+
 						if (in_array($user->type, array('admin', 'staff'))) {
 							$city .= ' <input type="checkbox" class="fix-address" data-field="city" data-type="' . $type . '" data-id="' . $o_r['id'] . '">';
 						}
 					} else {
 						$city = $o_r['city'];
 					}
-				echo $city; 
+				echo $city;
 				?>
 			</td>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('zip', $hidden_columns)) : ?>
 			<td>
-				<?php 
+				<?php
 					if (preg_match('/_MISMATCH$/', $o_r['zip'])) {
-					
+
 						$zip = str_replace('_MISMATCH', '', $o_r['zip']) . ' <span class="label label-warning show-tooltip" title="Mismatch"><i class="icon-exclamation-sign icon-white"></i></span>';
-						
+
 						if (in_array($user->type, array('admin', 'staff'))) {
 							$zip .= ' <input type="checkbox" class="fix-address" data-field="zip" data-type="' . $type . '" data-id="' . $o_r['id'] . '">';
 						}
 					} else {
 						$zip = $o_r['zip'];
 					}
-				echo $zip; 
+				echo $zip;
 				?>
 			</td>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('state', $hidden_columns)) : ?>
 			<td>
-				<?php 
+				<?php
 					if (preg_match('/_MISMATCH$/', $o_r['state'])) {
-					
+
 						$state = str_replace('_MISMATCH', '', $o_r['state']) . ' <span class="label label-warning show-tooltip" title="Mismatch"><i class="icon-exclamation-sign icon-white"></i></span>';
-						
+
 						if (in_array($user->type, array('admin', 'staff'))) {
 							$state .= ' <input type="checkbox" class="fix-address" data-field="state" data-type="' . $type . '" data-id="' . $o_r['id'] . '">';
 						}
 					} else {
 						$state = $o_r['state'];
 					}
-				echo $state; 
+				echo $state;
 				?>
 			</td>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('country', $hidden_columns)) : ?>
 			<td>
-				<?php 
+				<?php
 					if (preg_match('/_MISMATCH$/', $o_r['country'])) {
-					
+
 						$country = str_replace('_MISMATCH', '', $o_r['country']) . ' <span class="label label-warning show-tooltip" title="Mismatch"><i class="icon-exclamation-sign icon-white"></i></span>';
-						
+
 						if (in_array($user->type, array('admin', 'staff'))) {
 							$country .= ' <input type="checkbox" class="fix-address" data-field="country" data-type="' . $type . '" data-id="' . $o_r['id'] . '">';
 						}
 					} else {
 						$country = $o_r['country'];
 					}
-				echo $country; 
+				echo $country;
 				?>
 			</td>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('item_id', $hidden_columns)) : ?>
 			<td>
 				<?php echo !empty($o_r['item_id']) ? $o_r['item_id'] : ''; ?>
@@ -464,41 +491,36 @@
 				<?php echo !empty($o_r['paypal_account']) ? $o_r['paypal_account'] : ''; ?>
 			</td>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('email', $hidden_columns)) : ?>
 			<td>
-				<?php 
+				<?php
 					if (preg_match('/_MISMATCH$/', $o_r['email'])) {
-					
+
 						$email = str_replace('_MISMATCH', '', $o_r['email']) . ' <span class="label label-warning show-tooltip" title="Mismatch"><i class="icon-exclamation-sign icon-white"></i></span>';
-						
+
 						if (in_array($user->type, array('admin', 'staff'))) {
 							$email .= ' <input type="checkbox" class="fix-address" data-field="email" data-type="' . $type . '" data-id="' . $o_r['id'] . '">';
 						}
 					} else {
 						$email = $o_r['email'];
 					}
-				echo $email; 
+				echo $email;
 				?>
 			</td>
 			<?php endif; ?>
-			
-			<?php if (!in_array('public_id', $hidden_columns)) : ?>
-			<td>
-				<?php echo !empty($o_r['public_id']) ? $o_r['public_id'] : ''; ?>
-			</td>
-			<?php endif; ?>
-			
+
+
 			<?php if (!in_array('time_added', $hidden_columns)) : ?>
 			<td>
 				<?php echo date('H:i:s', strtotime($o_r['date_added'])); ?> UTC
 			</td>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('internal_status', $hidden_columns)) : ?>
-			<td>
-				<?php 
-				
+			<td class="internal-status" data-status="<?php echo $o_r['internal_status']; ?>">
+				<?php
+
 				if ($o_r['internal_status'] == 'email') {
 					$label = 'info';
 				} elseif ($o_r['internal_status'] == 'new') {
@@ -510,102 +532,134 @@
 				} elseif ($o_r['internal_status'] == 'cancelled' || $o_r['internal_status'] == 'refunded') {
 					$label = 'important';
 				}
-				
+
 				?>
 				<span class="label label-<?php echo $label; ?>"><?php echo $o_r['internal_status']; ?></span>
 			</td>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('fullfillment_status', $hidden_columns)) : ?>
 			<td>
 				<?php echo !empty($o_r['fullfillment_status']) ? $o_r['fullfillment_status'] : ''; ?>
 			</td>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('tracking_id', $hidden_columns)) : ?>
 			<td>
 				<?php echo !empty($o_r['tracking_id']) ? $o_r['tracking_id'] : ''; ?>
 			</td>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('shipping_method', $hidden_columns)) : ?>
-			<td>
+			<td class="shipping-method" data-shipping="<?php echo $o_r['shipping_method']; ?>">
 				<?php echo !empty($o_r['shipping_method']) ? $o_r['shipping_method'] : ''; ?>
 			</td>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('fullfillment_id', $hidden_columns)) : ?>
 			<td>
 				<?php echo !empty($o_r['fullfillment_id']) ? $o_r['fullfillment_id'] : ''; ?>
 			</td>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('comments', $hidden_columns)) : ?>
 			<td>
 				<?php echo !empty($o_r['comments']) ? $o_r['comments'] : ''; ?>
 			</td>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('gross', $hidden_columns)) : ?>
 			<td>
 				<?php echo !empty($o_r['gross']) ? '$' . money_format($o_r['gross'], 2) : ''; ?>
 			</td>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('fee', $hidden_columns)) : ?>
 			<td>
 				<?php echo !empty($o_r['fee']) ? '$' . money_format($o_r['fee'], 2) : ''; ?>
 			</td>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('net', $hidden_columns)) : ?>
 			<td>
 				<?php echo !empty($o_r['net']) ? '$' . money_format($o_r['net'], 2) : ''; ?>
 			</td>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('shipping_cost', $hidden_columns)) : ?>
 			<td>
 				<?php echo !empty($o_r['shipping_cost']) ? '$' . money_format($o_r['shipping_cost'], 2) : ''; ?>
 			</td>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('commission', $hidden_columns)) : ?>
 			<td>
 				<?php echo !empty($o_r['commission']) ? '$' . money_format($o_r['commission'], 2) : ''; ?>
 			</td>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('affiliate_status', $hidden_columns)) : ?>
 			<td>
 				<?php echo str_replace('_', ' ', $o_r['affiliate_status']); ?>
 			</td>
 			<?php endif; ?>
-			
+
 			<?php if (!in_array('affiliate', $hidden_columns)) : ?>
-			<td>
+			<td  class="internal-affiliate" data-campaign="<?php echo !empty($o_r['affiliate']) ? $o_r['affiliate'] : ''; ?>">
 				<?php echo !empty($o_r['affiliate']) ? $o_r['affiliate'] : ''; ?>
 			</td>
+			<?php endif; ?>
+			<?php if (!in_array('campaign', $hidden_columns)) : ?>
+				<td class="internal-campaign" data-campaign="<?php echo $o_r['campaign']; ?>">
+					<?php echo !empty($o_r['campaign']) ? $o_r['campaign'] : ''; ?>
+				</td>
+			<?php endif; ?>
+			<?php if (!in_array('subcampaign', $hidden_columns)) : ?>
+				<td class="internal-subcampaign" data-subcampaign="<?php echo $o_r['subcampaign']; ?>">
+					<?php echo !empty($o_r['subcampaign']) ? $o_r['subcampaign'] : ''; ?>
+				</td>
+			<?php endif; ?>
+			<?php if (!in_array('ip', $hidden_columns)) : ?>
+				<td class="internal-ip" data-ip="<?php echo $o_r['ip']; ?>">
+					<?php echo !empty($o_r['ip']) ? $o_r['ip'] : ''; ?>
+				</td>
+			<?php endif; ?>
+			<?php if (!in_array('items', $hidden_columns)) : ?>
+				<td>
+					<?php
+					if (!empty($o_r['skus'])) {
+						foreach ($o_r['skus'] as $skus) {
+							if ($skus['quantity'] > 0) {
+								echo '<span class="label">' . $skus['quantity'] . " x " . $skus['sku'] . '</span>';
+							} else {
+								echo "";
+							}
+						}
+					} else {
+						echo "";
+					}
+					?>
+				</td>
 			<?php endif; ?>
 		</tr>
 		<?php endforeach; ?>
 	</tbody>
 </table>
 
-				
+
 <div class="row-fluid">
-	<div class="span6">			
+	<div class="span6">
 		<?php if ($user->type == 'admin'): ?>
 		<button class="btn btn-primary" id="submit-selected">Submit Selected for Fullfillment</button>
-		
-		<?php endif; ?>				
-		<button class="btn btn-warning" id="csv-export">CSV Export</button>	
+
+		<?php endif; ?>
+		<button class="btn btn-warning" id="csv-export">CSV Export</button>
 	</div>
 
 	<div class="span6">
 		<div class="pagination pull-right">
 			<ul>
-				<?php 
+				<?php
 					$query = '?' .
 						'search='         . $search . '&' .
 						'filter='         . $filter . '&' .
@@ -615,29 +669,29 @@
 						'affiliate='      . $affiliate . '&' .
 						'page='
 					;
-					
+
 				?>
-			
+
 				<?php for ($i=1; $i <= $pages; $i++): ?>
-				
+
 				<?php if ($page == $i): ?>
 				<li class="active"><a href="#"><?php echo $i; ?></a></li>
 				<?php else: ?>
 				<li><a href="<?php echo URL::base(); ?>order<?php echo $query . $i; ?>"><?php echo $i; ?></a></li>
 				<?php endif; ?>
-				
-				
+
+
 				<?php endfor; ?>
 			</ul>
 	</div>
-	
+
 	</div>
 </div>
 
 
 
 
-				
+
 <table class="table table-bordered" id="product-quantities">
 	<tr>
 		<?php foreach ($product_quantities as $name => $q) : ?>
@@ -649,9 +703,9 @@
 		<td><?php echo $q; ?></td>
 		<?php endforeach; ?>
 	</tr>
-</table>				
-			
-				
+</table>
+
+
 <div class="modal hide fade" id="columns-modal">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -659,7 +713,7 @@
 	</div>
 	<div class="modal-body">
 		<div class="row-fluid">
-		
+
 	<form action="<?php echo URL::base(); ?>user/save_hidden_columns" method="post">
 				<div class="span6">
 					<label class="checkbox">
@@ -704,6 +758,12 @@
 					<label class="checkbox">
 						<input type="checkbox" value="city" name="city"> City
 					</label>
+					<label class="checkbox">
+						<input type="checkbox" value="ip" name="ip">Ip
+					</label>
+					<label class="checkbox">
+						<input type="checkbox" value="items" name="items">Items
+					</label>
 				</div>
 				<div class="span6">
 					<label class="checkbox">
@@ -745,9 +805,15 @@
 					<label class="checkbox">
 						<input type="checkbox" value="affiliate_status" name="affiliate_status">Commission Status
 					</label>
-					
+
 					<label class="checkbox">
 						<input type="checkbox" value="affiliate" name="affiliate">Affiliate
+					</label>
+					<label class="checkbox">
+						<input type="checkbox" value="campaign" name="campaign">Campaign
+					</label>
+					<label class="checkbox">
+						<input type="checkbox" value="subcampaign" name="subcampaign">Subcampaign
 					</label>
 				</div>
 			</form>
@@ -766,7 +832,7 @@
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 		<h3>Order History</h3>
 	</div>
-	<div class="modal-body">	
+	<div class="modal-body">
 
 	</div>
 	<div class="modal-footer">
@@ -779,7 +845,7 @@
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 		<h3>Order Details</h3>
 	</div>
-	<div class="modal-body">	
+	<div class="modal-body">
 	</div>
 	<div class="modal-footer">
 		<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
@@ -820,7 +886,7 @@
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 		<h3>Update Address</h3>
 	</div>
-	<div class="modal-body">	
+	<div class="modal-body">
 		<form action="" method="post">
 			<input type="hidden" name="type">
 			<input type="hidden" name="id">
@@ -887,9 +953,9 @@
 						</div>
 					</div>
 				</div>
-			
+
 			</div>
-		
+
 
 
 		</form>
@@ -899,13 +965,13 @@
 		<a href="#" class="btn btn" data-dismiss="modal">Cancel</a>
 		<a href="#" class="btn btn-primary" id="order-address-update-modal-save">Save Changes</a>
 	</div>
-</div>	
+</div>
 
 <?php
 $list = array();
 foreach ($products as $p) {
 	$list[] = $p->name;
-} 
+}
 ?>
 <input type="hidden" name="products" id="available-products" value="<?php echo implode(',', $list); ?>">
 
@@ -914,7 +980,7 @@ foreach ($products as $p) {
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 		<h3>New Order</h3>
 	</div>
-	<div class="modal-body">	
+	<div class="modal-body">
 		<form action="" method="post">
 			<div class="row-fluid">
 				<div class="span4">
@@ -983,6 +1049,9 @@ foreach ($products as $p) {
 						<div class="status">
 							<select name="shipping_method" id="shipping_method">
 								<option value="">Not Selected</option>
+								<option value="Regular">Regular</option>
+								<option value="Standard">Standard</option>
+								<option value="Express">Express</option>
 								<option value="FED1">FedEx Next Day</option>
 								<option value="FED2">FedEx 2 Day </option>
 								<option value="FEDG">FedEx Ground</option>
@@ -1000,7 +1069,7 @@ foreach ($products as $p) {
 				</div>
 				<div class="span4">
 					<input type="hidden" name="items">
-					
+
 
 					<div class="control-group">
 						<label for="item">Add Item</label>
@@ -1008,7 +1077,7 @@ foreach ($products as $p) {
 							<input type="text" name="item" class="item-typeahead">
 						</div>
 					</div>
-					
+
 					<div class="control-group">
 						<label>Chosen Items:</label>
 						<div class="controls">
@@ -1027,7 +1096,7 @@ foreach ($products as $p) {
 		<a href="#" class="btn btn" data-dismiss="modal">Cancel</a>
 		<a href="#" class="btn btn-primary" id="order-new-modal-save">Save Order</a>
 	</div>
-</div>	
+</div>
 
 
 <div class="modal hide fade" id="order-details-update-modal">
@@ -1035,13 +1104,13 @@ foreach ($products as $p) {
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 		<h3>Update Details</h3>
 	</div>
-	<div class="modal-body">	
+	<div class="modal-body">
 		<form action="" method="post">
 			<input type="hidden" name="id">
-			
+
 			<div class="row-fluid">
 				<div class="span8">
-				
+
 					<div class="row-fluid">
 						<div class="span6">
 							<div class="control-group">
@@ -1084,6 +1153,9 @@ foreach ($products as $p) {
 								<div class="status">
 									<select name="shipping_method" id="shipping_method" class="input-block-level">
 										<option value="">Not Selected</option>
+										<option value="Regular">Regular</option>
+										<option value="Standard">Standard</option>
+										<option value="Express">Express</option>
 										<option value="FED1">FedEx Next Day</option>
 										<option value="FED2">FedEx 2 Day </option>
 										<option value="FEDG">FedEx Ground</option>
@@ -1127,13 +1199,13 @@ foreach ($products as $p) {
 								</div>
 							</div>
 						</div>
-		
+
 					</div>
 				</div>
 				<div class="span4">
 
 					<input type="hidden" name="items">
-					
+
 
 					<div class="control-group">
 						<label for="item">Add Item</label>
@@ -1141,7 +1213,7 @@ foreach ($products as $p) {
 							<input type="text" name="item" class="item-typeahead">
 						</div>
 					</div>
-					
+
 					<div class="control-group">
 						<label>Chosen Items:</label>
 						<div class="controls">
@@ -1160,7 +1232,80 @@ foreach ($products as $p) {
 		<a href="#" class="btn btn" data-dismiss="modal">Cancel</a>
 		<a href="#" class="btn btn-primary" id="order-details-update-modal-save">Save Changes</a>
 	</div>
-</div>		
+</div>
+
+<div class="modal hide fade" id="address-hover-modal">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h3>Address Details</h3>
+	</div>
+	<div class="modal-body">
+		<form action="" method="post">
+			<input type="hidden" name="type">
+			<input type="hidden" name="id">
+			<div class="row-fluid">
+				<div class="span6">
+					<div class="control-group">
+						<label for="address1">Address</label>
+						<div class="controls">
+							<input type="text" name="address1" id="address1" readonly>
+						</div>
+					</div>
+					<div class="control-group">
+						<label for="address2">Address 2</label>
+						<div class="controls">
+							<input type="text" name="address2" id="address2" readonly>
+						</div>
+					</div>
+					<div class="control-group">
+						<label for="phone">Phone</label>
+						<div class="controls">
+							<input type="text" name="phone" id="phone" readonly>
+						</div>
+					</div>
+				</div>
+				<div class="span6">
+					<div class="control-group">
+						<label for="city">City</label>
+						<div class="controls">
+							<input type="text" name="city" id="city" readonly>
+						</div>
+					</div>
+					<div class="control-group">
+						<label for="state">State</label>
+						<div class="controls">
+							<input type="text" name="state" id="state" readonly>
+						</div>
+					</div>
+					<div class="control-group">
+						<label for="zip">ZIP</label>
+						<div class="controls">
+							<input type="text" name="zip" id="zip" readonly>
+						</div>
+					</div>
+					<div class="control-group">
+						<label for="country">Country</label>
+						<div class="controls">
+							<select name="country" id="country" disabled>
+								<?php foreach ($countries as $a => $f): ?>
+								<option value="<?php echo $a; ?>"><?php echo $f; ?></option>
+								<?php endforeach; ?>
+							</select>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+
+
+		</form>
+
+	</div>
+	<div class="modal-footer">
+		<a href="#" class="btn btn" data-dismiss="modal">Cancel</a>
+	</div>
+</div>
 
 
 <div class="modal hide fade" id="order-merge-modal">
@@ -1172,7 +1317,7 @@ foreach ($products as $p) {
 		<p>Choose the order # you want to merge this order with.</p>
 		<form action="" method="post">
 			<input type="hidden" name="child_order_id" id="child_order_id">
-			
+
 			<div class="control-group">
 				<label for="parent_order_id">Order #</label>
 				<div class="status">
