@@ -31,9 +31,13 @@ class Model_Click extends ORM {
 				->find();
 		}
 		
-		if ($this->loaded()) {	
-			$this->campaign    = $data['campaign'];
-			$this->subcampaign = $data['subcampaign'];
+		if ($this->loaded()) {
+			if (!empty($data['campaign'])) {
+				$this->campaign = $data['campaign'];
+			}
+			if (!empty($data['subcampaign'])) {
+				$this->subcampaign = $data['subcampaign'];
+			}
 			$this->raw_clicks += 1;
 			$this->save();
 			return;
